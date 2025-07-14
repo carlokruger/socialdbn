@@ -208,3 +208,91 @@ __marimo__/
 
 # macOS
 .DS_Store
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# macOS folder attributes
+.Spotlight-V100
+.Trashes
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+env/
+venv/
+ENV/
+.venv/
+pip-wheel-metadata/
+*.egg-info/
+dist/
+build/
+
+# Pytest / coverage
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# Compiled objects
+*.so
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# MyPy / type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre
+.pyre/
+
+# Temporary files
+*.swp
+*~
+
+# SFTP or FTP files
+*.tmp
+
+# AWS SAM build folders
+.aws-sam/
+
+# Docker
+**/.dockerignore
+Dockerfile
+
+# Node (if mixing JS)
+node_modules/
+npm-debug.log*
+
+# If using Terraform
+.terraform/
+
+# If using Yarn
+.yarn/
+.yarn-cache/
+.pnp.*
+
+# If using macOS + VS Code Remote
+.vscode-server/
+
+# Custom local config
+local_settings.py
