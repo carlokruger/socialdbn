@@ -1,0 +1,13 @@
+{
+    "python.defaultInterpreterPath": "${workspaceFolder}/socialdbn/bin/python",
+    "python.terminal.activateEnvironment": true,
+    "python.venvPath": "${workspaceFolder}",
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.formatting.provider": "black",
+    "python.analysis.extraPaths": ["${workspaceFolder}"],
+    "terminal.integrated.env.osx": {
+        "VIRTUAL_ENV": "${workspaceFolder}/socialdbn",
+        "PATH": "${workspaceFolder}/socialdbn/bin:${env:PATH}"
+    }
+}
