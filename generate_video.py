@@ -17,13 +17,22 @@ def download_file(url, dest_path):
             f.write(chunk)
     print(f"✅ Saved to {dest_path}")
 
-def generate_video(image_path, audio_path, output_path):
+def generate_video(image_path, audio_path, blurb_text, hashtags_text, output_path):
+    # Build drawtext filter string
+    filter_str = (
+        f"drawtext=text='{blurb_text}':"
+        f"x=(w-text_w)/2:y=(h*2/3):fontcolor=black:fontsize=200,"
+        f"drawtext=text='{hashtags_text}':"
+        f"x=(w-text_w)/2:y=(h*2/3)+500:fontcolor=black:fontsize=200"
+    )
+
     cmd = [
         "ffmpeg",
         "-y",
         "-loop", "1",
         "-i", str(image_path),
         "-i", str(audio_path),
+        "-vf", filter_str,
         "-c:v", "libx264",
         "-tune", "stillimage",
         "-c:a", "aac",
@@ -36,8 +45,14 @@ def generate_video(image_path, audio_path, output_path):
     subprocess.run(cmd, check=True)
     print(f"✅ Video saved to: {output_path}")
 
+
+
+def sanitize_text_for_ffmpeg(text):
+    # Escape characters that ffmpeg drawtext needs
+    return text.replace(":", "\\:").replace("'", "\\'").replace(",", "\\,").replace("\n", " ")
+
 def main():
-    parser = argparse.ArgumentParser(description="Generate video from image and audio on S3")
+    parser = argparse.ArgumentParser(description="Generate video with overlay text from S3")
     parser.add_argument("--artist", required=True, help="Artist name")
     parser.add_argument("--track", required=True, help="Track name")
     args = parser.parse_args()
@@ -47,17 +62,25 @@ def main():
     # Local filenames
     image_path = Path(f"{args.track}_albumart.png")
     audio_path = Path(f"{args.track}_snippet.wav")
+    blurb_path = Path(f"{args.track}_blurb.txt")
+    hashtags_path = Path(f"{args.track}_hashtags.txt")
     output_path = Path(f"{args.track}.mp4")
 
     # Download files
     download_file(f"{base_url}/albumart.png", image_path)
     download_file(f"{base_url}/snippet.wav", audio_path)
+    download_file(f"{base_url}/blurb.txt", blurb_path)
+    download_file(f"{base_url}/hashtags.txt", hashtags_path)
+
+    # Read text files
+    blurb_text = sanitize_text_for_ffmpeg(blurb_path.read_text(encoding="utf-8").strip())
+    hashtags_text = sanitize_text_for_ffmpeg(hashtags_path.read_text(encoding="utf-8").strip())
 
     # Generate video
-    generate_video(image_path, audio_path, output_path)
+    generate_video(image_path, audio_path, blurb_text, hashtags_text, output_path)
 
     # Cleanup
-    for f in [image_path, audio_path]:
+    for f in [image_path, audio_path, blurb_path, hashtags_path]:
         try:
             f.unlink()
             print(f"🧹 Deleted temporary file: {f}")
