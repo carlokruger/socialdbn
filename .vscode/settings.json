@@ -9,5 +9,8 @@
     "terminal.integrated.env.osx": {
         "VIRTUAL_ENV": "${workspaceFolder}/socialdbn",
         "PATH": "${workspaceFolder}/socialdbn/bin:${env:PATH}"
-    }
+    },
+    "cursorpyright.analysis.extraPaths": [
+        "${workspaceFolder}"
+    ]
 }

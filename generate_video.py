@@ -17,3 +17,4 @@ def download_file(url, dest_path):
         sys.exit(1)
     with open(dest_path, 'wb') as f:
         for chunk in response.iter_content(1024):
+            f.write(chunk)
